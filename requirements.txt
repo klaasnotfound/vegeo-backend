@@ -1,16 +1,10 @@
 colorama
 detectree
 fastapi[standard]
-ipykernel
-labelme
-matplotlib
 numpy
 Pillow
 psycopg2
 pytest
 requests
-setuptools
 sqlalchemy
-torch
-torchvision
 tqdm

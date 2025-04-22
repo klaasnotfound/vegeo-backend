@@ -1,0 +1,6 @@
+ipykernel
+labelme
+matplotlib
+setuptools
+torch
+torchvision
