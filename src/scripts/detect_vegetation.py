@@ -71,7 +71,10 @@ def download_and_classify_tiles(region_name: str, tile_coords: Set[TileCoords], 
         url = f"{tile_layer_url}{tpath}?blankTile=false"
         fpath = f"{data_dir}/naip_{z}_{y}_{x}.jpg"
         if not os.path.isfile(fpath):
-            res = requests.get(url)
+            try:
+                res = requests.get(url)
+            except:  # We skip occasional SSL and rate limit errors
+                continue
             if res.status_code != 200:
                 continue
             im = Image.open(BytesIO(res.content))
