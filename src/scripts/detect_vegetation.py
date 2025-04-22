@@ -1,3 +1,4 @@
+import sys
 import detectree as dtr
 import json
 import math
@@ -64,9 +65,7 @@ def download_and_classify_tiles(region_name: str, tile_coords: Set[TileCoords], 
 
     # Suppress irrelevant warnings from rasterio and the classifier lib
     warnings.filterwarnings("ignore")
-    coords = tqdm(
-        tile_coords, leave=False, desc="    ↳ Detect vegetation", unit="tiles"
-    )
+    coords = tqdm(tile_coords, leave=False, desc="    ↳ Detect vegetation", unit="tiles")
     for x, y in coords:
         tpath = f"{z}/{y}/{x}"
         url = f"{tile_layer_url}{tpath}?blankTile=false"
@@ -79,12 +78,7 @@ def download_and_classify_tiles(region_name: str, tile_coords: Set[TileCoords], 
             im = ImageOps.autocontrast(im)
             im.save(fpath)
         # Check if raster tile exists
-        if session.scalar(
-            select(ImgTile.x)
-            .where(ImgTile.x == x)
-            .where(ImgTile.y == y)
-            .where(ImgTile.z == z)
-        ):
+        if session.scalar(select(ImgTile.x).where(ImgTile.x == x).where(ImgTile.y == y).where(ImgTile.z == z)):
             continue
         pred = dtr.Classifier().predict_img(fpath)
         pred_rgba = grayscale_to_rgba(pred, [1, 0, 1, 0.5])
@@ -97,14 +91,13 @@ def download_and_classify_tiles(region_name: str, tile_coords: Set[TileCoords], 
         session.commit()
 
 
-def detect_trees():
+def detect_vegetation():
     """Go through all regions in the DB and detect trees in tiles that intersect with power line segments."""
 
     log.msg("Detect trees along power lines in major US cities")
 
     session = db.get_session()
     regions = session.scalars(select(Region))
-    # ['Mesa', 'New York City', 'San Francisco', 'Los Angeles', 'Boston', 'San Antonio', 'Seattle', 'Indianapolis', 'Detroit', 'San Diego', 'Denver', 'Houston', 'Phoenix', 'Dallas', 'Fort Worth', 'Austin', 'El Paso', 'Memphis', 'Charlotte', 'Columbus', 'Jacksonville', 'Sacramento', 'Tucson', 'Nashville', 'Las Vegas', 'Albuquerque', 'Oklahoma City', 'Kansas City', 'Fresno']
     for region in regions:
         coords = get_power_line_tile_coords(region)
         log.info(
@@ -117,4 +110,4 @@ def detect_trees():
 
 
 if __name__ == "__main__":
-    detect_trees()
+    detect_vegetation()

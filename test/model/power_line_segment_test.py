@@ -24,10 +24,7 @@ def test_init(segment_data):
 
 def test_repr(segment_data):
     pls = PowerLineSegment(segment_data)
-    assert (
-        f"{pls!r}"
-        == "PowerLineSegment [808267289] (35.1192121, -89.933647) - (35.1197699, -89.9321114) 5 nodes"
-    )
+    assert f"{pls!r}" == "PowerLineSegment [808267289] (35.1192121, -89.933647) - (35.1197699, -89.9321114) 5 nodes"
 
 
 @pytest.fixture

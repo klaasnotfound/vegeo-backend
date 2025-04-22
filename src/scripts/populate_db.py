@@ -30,9 +30,7 @@ def fetch_major_us_cities():
     items = data["results"]["bindings"]
     cities = []
     for item in items:
-        loc = [
-            float(v) for v in re.findall(r".*\((.*?) (.*?)\)", item["gps"]["value"])[0]
-        ]
+        loc = [float(v) for v in re.findall(r".*\((.*?) (.*?)\)", item["gps"]["value"])[0]]
         img_file = item["image"]["value"].split("/")[-1]
         img_url = f"https://commons.wikimedia.org/w/thumb.php?width=320&f={img_file}"
         cities.append(
@@ -70,7 +68,7 @@ def fetch_minor_power_lines(lat: float, lon: float, bb_size=0.2):
 
 
 def populate_db():
-    """Fetches power line data for major US cities and stores it in the database."""
+    """Fetch power line data for major US cities and stores it in the database."""
     log.msg("Fetch power line data for major US cities")
 
     db.reset()
@@ -80,7 +78,7 @@ def populate_db():
         for city in cities:
             sw, ne, data = fetch_minor_power_lines(city["lat"], city["lon"])
             if not data:
-                log.error(f" {city['name']}", " (no segments)")
+                log.error(f"{city['name']}", " (no segments)")
                 continue
             num_pls = len(data["elements"])
             log.info(f" {city['name']}", f" ({num_pls} segments)", "  ↓")

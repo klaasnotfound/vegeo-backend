@@ -60,12 +60,10 @@ def test_tile_coords_to_lat_lon():
     # Works worldwide across different LOD
     assert tile_coords_to_lat_lon(0, 0, 0) == (0, 0)
     assert round(tile_coords_to_lat_lon(1, 0, 1).lat) == 67
-    # fmt: off
     assert [round(v, 6) for v in tile_coords_to_lat_lon(35048, 48516, 17)] == [42.284421, -83.736420]
     assert [round(v, 2) for v in tile_coords_to_lat_lon(70406, 42987, 17)] == [52.52, 13.38]
     assert [round(v, 2) for v in tile_coords_to_lat_lon(72234, 78669, 17)] == [-33.9, 18.40]
     assert [round(v, 2) for v in tile_coords_to_lat_lon(40334, 87548, 17)] == [-51.61, -69.22]
-    # fmt: on
 
     # Works at all corners of a tile
     assert tile_coords_to_lat_lon(1, 2, 3, 0, 0) == (66.51326044311185, -135)

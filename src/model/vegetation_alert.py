@@ -25,9 +25,7 @@ class VegetationAlert(Base):
 
     Primary__table_args__ = (PrimaryKeyConstraint(lat, lon),)
 
-    def __init__(
-        self, lat: float, lon: float, desc: str, risk: int, pls_id: int = None
-    ):
+    def __init__(self, lat: float, lon: float, desc: str, risk: int, pls_id: int = None):
         assert risk > 0 and risk < 11, "Risk level must be in [1, 10]"
 
         self.lat = lat

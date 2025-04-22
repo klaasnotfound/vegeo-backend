@@ -13,19 +13,13 @@ LAT_MAX = math.degrees(2 * math.atan(math.pow(math.e, math.pi)) - math.pi / 2)
 def lat_lon_to_tile_coords(lat: float, lon: float, z: int) -> TileCoords:
     """Convert a lat/long coordinate to web Mercator tile coordinates at a given zoom level"""
 
-    assert (
-        lat >= -LAT_MAX and lat <= LAT_MAX
-    ), f"Latitude must be within [-{LAT_MAX}, {LAT_MAX}]"
+    assert lat >= -LAT_MAX and lat <= LAT_MAX, f"Latitude must be within [-{LAT_MAX}, {LAT_MAX}]"
     assert lon >= -180.0 and lon <= 180.0, "Longitude must be within [-180, 180]"
     assert z >= 0 and z <= 17, "Zoom level must be within [0, 17]"
 
     # See https://en.wikipedia.org/wiki/Web_Mercator_projection
     tx = math.floor((2**z) * (180 + lon) / 360)
-    ty = math.floor(
-        (2**z)
-        * (180 - math.degrees(math.log(math.tan(math.pi / 4 + math.radians(lat) / 2))))
-        / 360
-    )
+    ty = math.floor((2**z) * (180 - math.degrees(math.log(math.tan(math.pi / 4 + math.radians(lat) / 2)))) / 360)
 
     return TileCoords(tx, ty)
 
@@ -39,21 +33,14 @@ def lat_lon_to_pixel_coords(lat: float, lon: float, z: int, ts=256) -> Pixel:
     :param ts:  tile size in pixels within [1, 4096]
     """
 
-    assert (
-        lat >= -LAT_MAX and lat <= LAT_MAX
-    ), f"Latitude must be within [-{LAT_MAX}, {LAT_MAX}]"
+    assert lat >= -LAT_MAX and lat <= LAT_MAX, f"Latitude must be within [-{LAT_MAX}, {LAT_MAX}]"
     assert lon >= -180.0 and lon <= 180.0, "Longitude must be within [-180, 180]"
     assert z >= 0 and z <= 17, "Zoom level must be within [0, 17]"
     assert ts > 0 and ts <= 4096, "Tile size must within [1, 4096]"
 
     # See https://en.wikipedia.org/wiki/Web_Mercator_projection
     px = math.floor((2**z) * (180 + lon) / 360 * ts)
-    py = math.floor(
-        (2**z)
-        * (180 - math.degrees(math.log(math.tan(math.pi / 4 + math.radians(lat) / 2))))
-        / 360
-        * ts
-    )
+    py = math.floor((2**z) * (180 - math.degrees(math.log(math.tan(math.pi / 4 + math.radians(lat) / 2)))) / 360 * ts)
 
     return Pixel(px, py)
 
@@ -75,9 +62,7 @@ def tile_coords_to_lat_lon(x: int, y: int, z: int, ox=0.5, oy=0.5) -> LatLon:
     assert oy >= 0 and oy <= 1, "y offset must be within [0, 1]"
 
     lon = (x + ox) * 360 / (2**z) - 180
-    lat = 90 - math.degrees(
-        2 * math.atan(math.pow(math.e, 2 * math.pi / (2**z) * (y + oy) - math.pi))
-    )
+    lat = 90 - math.degrees(2 * math.atan(math.pow(math.e, 2 * math.pi / (2**z) * (y + oy) - math.pi)))
 
     return LatLon(lat, lon)
 
@@ -98,9 +83,7 @@ def pixel_coords_to_lat_lon(px: int, py: int, z: int, ts=256) -> LatLon:
     assert ts > 0 and ts <= 4096, "Tile size must within [1, 4096]"
 
     lon = px / ts * 360 / (2**z) - 180
-    lat = 90 - math.degrees(
-        2 * math.atan(math.pow(math.e, 2 * math.pi / (2**z) * py / ts - math.pi))
-    )
+    lat = 90 - math.degrees(2 * math.atan(math.pow(math.e, 2 * math.pi / (2**z) * py / ts - math.pi)))
 
     return LatLon(lat, lon)
 

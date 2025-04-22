@@ -20,10 +20,5 @@ def test_init():
 
 
 def test_repr():
-    pls = Region(
-        "Memphis", LatLon(35.089094, -90.054296), LatLon(35.203296, -89.860064)
-    )
-    assert (
-        f"{pls!r}"
-        == 'Region "Memphis" (35.089094, -90.054296) - (35.203296, -89.860064)'
-    )
+    pls = Region("Memphis", LatLon(35.089094, -90.054296), LatLon(35.203296, -89.860064))
+    assert f"{pls!r}" == 'Region "Memphis" (35.089094, -90.054296) - (35.203296, -89.860064)'

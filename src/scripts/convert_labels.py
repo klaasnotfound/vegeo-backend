@@ -45,13 +45,9 @@ def convert_labeled_data(label_dir: str, out_dir: str, classes: List[str]):
                     shape["points"][0][1] = y1
                     shape["points"][1][1] = y0
         # END FIX
-        lbl, _ = lm_utils.shapes_to_label(
-            image.shape, label_file.shapes, label_name_to_value
-        )
+        lbl, _ = lm_utils.shapes_to_label(image.shape, label_file.shapes, label_name_to_value)
         log.info(file_stub)
-        PIL.Image.fromarray(image).save(
-            os.path.join(out_dir, f"images/{file_stub}.png")
-        )
+        PIL.Image.fromarray(image).save(os.path.join(out_dir, f"images/{file_stub}.png"))
         lm_utils.lblsave(os.path.join(out_dir, f"masks/{file_stub}_mask.png"), lbl)
 
     log.success("Done")

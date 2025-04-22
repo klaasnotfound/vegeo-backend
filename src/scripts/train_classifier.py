@@ -35,22 +35,15 @@ def predict(img_name: str):
     model = load_model(model_path)
     pred = predict_objects(model, image)
 
-    image = (255.0 * (image - image.min()) / (image.max() - image.min())).to(
-        torch.uint8
-    )
+    image = (255.0 * (image - image.min()) / (image.max() - image.min())).to(torch.uint8)
     image = image[:3, ...]
-    pred_labels = [
-        f"{classes[label]}: {score:.3f}"
-        for label, score in zip(pred["labels"], pred["scores"])
-    ]
+    pred_labels = [f"{classes[label]}: {score:.3f}" for label, score in zip(pred["labels"], pred["scores"])]
     pred_colors = [colors[label] for label in pred["labels"]]
     pred_boxes = pred["boxes"].long()
     output_image = draw_bounding_boxes(image, pred_boxes, pred_labels, pred_colors)
 
     masks = (pred["masks"] > 0.2).squeeze(1)
-    output_image = draw_segmentation_masks(
-        output_image, masks, alpha=0.5, colors="blue"
-    )
+    output_image = draw_segmentation_masks(output_image, masks, alpha=0.5, colors="blue")
 
     plt.figure(figsize=(8, 8))
     plt.imshow(output_image.permute(1, 2, 0))

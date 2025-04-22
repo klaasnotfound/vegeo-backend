@@ -85,12 +85,7 @@ def check_spot(spot: PowerLineSpot) -> float:
     px, py = spot.pix_loc.x - tx * ts, spot.pix_loc.y - ty * ts
 
     session = db.get_session()
-    tile = session.scalar(
-        select(ImgTile)
-        .where(ImgTile.x == tx)
-        .where(ImgTile.y == ty)
-        .where(ImgTile.z == z)
-    )
+    tile = session.scalar(select(ImgTile).where(ImgTile.x == tx).where(ImgTile.y == ty).where(ImgTile.z == z))
     if not tile:
         return 0
     im = Image.open(BytesIO(tile.d))
