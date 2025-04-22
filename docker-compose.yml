@@ -1,0 +1,26 @@
+services:
+  api:
+    build: .
+    container_name: 'vegeo-api-server'
+    volumes:
+      - ./src:/app/src
+      - ./data/db:/app/data/db
+    ports:
+      - '8000:8000'
+    environment:
+      - DB_CONN=postgresql://postgres:postgres@postgres:5432/vegeo
+    entrypoint:
+      - /app/src/entrypoint.sh
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: 'vegeo-db'
+    restart: unless-stopped
+    volumes:
+      - ./data/db/postgres:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=vegeo

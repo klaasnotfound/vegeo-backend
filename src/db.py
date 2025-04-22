@@ -13,11 +13,8 @@ import src.model.vegetation_alert
 load_dotenv()
 
 DB_SESSION = None
-USER = os.getenv("PG_USER")
-PASS = os.getenv("PG_PASS")
-ENGINE = sqlalchemy.create_engine(
-    f"postgresql+psycopg2://{USER}:{PASS}@localhost:5432/vegeo"
-)
+CONN = os.getenv("DB_CONN").replace("postgresql://", "postgresql+psycopg2://")
+ENGINE = sqlalchemy.create_engine(CONN)
 
 
 def reset():

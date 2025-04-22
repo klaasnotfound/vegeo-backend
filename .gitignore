@@ -21,5 +21,6 @@ venv.bak/
 # Pytest
 .pytest_cache/
 
-# Temp data
-data/temp/
+# Data
+data/db/postgres
+data/temp
