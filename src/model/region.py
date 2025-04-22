@@ -1,4 +1,5 @@
 from typing import Optional
+from pydantic import BaseModel, Field
 from sqlalchemy import String, Float, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import PrimaryKeyConstraint
@@ -37,3 +38,29 @@ class Region(Base):
 
     def __repr__(self) -> str:
         return f'Region "{self.name}" ({self.bb_min_lat}, {self.bb_min_lon}) - ({self.bb_max_lat}, {self.bb_max_lon})'
+
+
+class RegionSchema(BaseModel):
+    name: str = Field(title="Official name of the region")
+    bb_min_lat: float = Field(title="Southern latitude of the bounding box")
+    bb_min_lon: float = Field(title="Western longitude of the bounding box")
+    bb_max_lat: float = Field(title="Northern latitude of the bounding box")
+    bb_max_lon: float = Field(title="Eastern longitude of the bounding box")
+    img_url: Optional[str] = Field(None, title="URL of cover image for the region")
+    num_pls: Optional[int] = Field(None, title="Number of power line segments in the region")
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "name": "Mesa",
+                    "img_url": "https://commons.wikimedia.org/w/thumb.php?width=320&f=Downtown%20Mesa%20Arizona.jpg",
+                    "bb_min_lat": 33.3132423,
+                    "bb_max_lat": 33.5121448,
+                    "bb_max_lon": -111.7181466,
+                    "bb_min_lon": -111.9348257,
+                    "num_pls": 41,
+                }
+            ]
+        }
+    }

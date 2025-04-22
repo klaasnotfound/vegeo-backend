@@ -1,5 +1,5 @@
-import json
-from typing import Dict, Optional
+from typing import Optional
+from pydantic import BaseModel, Field
 from sqlalchemy import ForeignKey, Integer, Float, PrimaryKeyConstraint, String
 from sqlalchemy.orm import Mapped, mapped_column
 from src.model.base import Base
@@ -36,3 +36,25 @@ class VegetationAlert(Base):
 
     def __repr__(self):
         return f"VegetationAlert {self.lat, self.lon} [{self.risk}]: {self.desc}"
+
+
+class VegetationAlertSchema(BaseModel):
+    lat: float = Field(title="Latitude of the alert location")
+    lon: float = Field(title="Longitude of the alert location")
+    desc: str = Field(title="Short description of the alert")
+    risk: int = Field(title="Risk level in [1, 10]")
+    pls_id: Optional[int] = Field(None, title="ID of the power line segment this alert belongs to")
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "lat": 40.7398274408644,
+                    "lon": -74.0427875518799,
+                    "desc": "Power line overlap",
+                    "risk": 2,
+                    "pls_id": 203432097,
+                },
+            ]
+        }
+    }
