@@ -48,9 +48,7 @@ class NaipDataset(torch.utils.data.Dataset):
         img = tv_tensors.Image(img)
 
         target = {}
-        target["boxes"] = tv_tensors.BoundingBoxes(
-            boxes, format="XYXY", canvas_size=F.get_size(img)
-        )
+        target["boxes"] = tv_tensors.BoundingBoxes(boxes, format="XYXY", canvas_size=F.get_size(img))
         target["masks"] = tv_tensors.Mask(masks)
         target["labels"] = labels
         target["image_id"] = image_id

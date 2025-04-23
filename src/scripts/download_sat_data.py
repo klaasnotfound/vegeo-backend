@@ -48,9 +48,7 @@ def download_training_data(num_regions=5):
     """Download randomly sampled satellite data for labeling/training."""
 
     with db.get_session() as session:
-        regions = session.scalars(
-            select(Region).order_by(desc(Region.num_pls)).limit(num_regions)
-        )
+        regions = session.scalars(select(Region).order_by(desc(Region.num_pls)).limit(num_regions))
         for region in regions:
             download_sampled_naip_data_to_disk(region)
 

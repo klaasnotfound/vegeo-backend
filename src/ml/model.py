@@ -28,9 +28,7 @@ def get_model(num_classes) -> MaskRCNN:
     in_features_mask = model.roi_heads.mask_predictor.conv5_mask.in_channels
     hidden_layer = 256
     # ... and replace the mask predictor with a new one
-    model.roi_heads.mask_predictor = MaskRCNNPredictor(
-        in_features_mask, hidden_layer, num_classes
-    )
+    model.roi_heads.mask_predictor = MaskRCNNPredictor(in_features_mask, hidden_layer, num_classes)
 
     return model
 
@@ -58,9 +56,7 @@ def get_device() -> DeviceLikeType:
 
 
 # Adapted from https://pytorch.org/tutorials/intermediate/torchvision_tutorial.html
-def train_model(
-    ds_train: Dataset, ds_test: Dataset, num_classes: int, num_epochs: int
-) -> MaskRCNN:
+def train_model(ds_train: Dataset, ds_test: Dataset, num_classes: int, num_epochs: int) -> MaskRCNN:
     """Train the segmentation model with the given data."""
 
     # Train on GPU/Metal if possible, else fall back to the CPU
