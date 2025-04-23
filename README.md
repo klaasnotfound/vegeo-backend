@@ -25,13 +25,13 @@ git clone git@github.com:klaasnotfound/vegeo-backend.git
 cd vegeo-backend
 ```
 
-The easiest way to get the Vegeo Backend up and running is by using Docker:
+The easiest way to get the Vegeo backend up and running is by using Docker:
 
 ```bash
 docker compose up
 ```
 
-_Note:_ The initial build of the Docker image may take 2-3 minutes.
+_Note:_ The vegeo Docker image supports `linux/arm64` and `linux/amd64`, so it should work on a Mac (both Apple Silicon and Intel) as well as Windows and Linux. If you're architecture doesn't match, you will want to open the `docker-compose.yaml` file, replace `image: klaasnotfound/vegeo:latest` with `build: .` and run `docker compose up` again. The build will take a few minutes.
 
 ---
 
@@ -39,11 +39,11 @@ _Note:_ The initial build of the Docker image may take 2-3 minutes.
 <summary><i>Alternative</i>: Local Setup</summary>
  
 
-If you don't want to use Docker you'll have to set up the Python environment and a PostgreSQL database yourself.
+If you don't want to use Docker you'll have to set up the Python environment and a PostgreSQL database yourself. Install or update both with your favorite package manager (`brew`, `apt` etc.), then:
 
 1. Make sure `python3 --version` returns `Python 3.12.3` or higher.
 
-2. Make sure `psql --version` returns `psql (PostgreSQL) 16.8` or any other 16.x version. This is important because we want to import a database backup later on.
+2. Make sure `psql --version` returns `psql (PostgreSQL) 16.8` or any other 16.x version. This is important for importing a database backup later on.
 
 3. Inside the `vegeo-backend` directory, create a Python virtual environment and install the packages:
 
@@ -51,6 +51,24 @@ If you don't want to use Docker you'll have to set up the Python environment and
    python3 -m venv venv
    source venv/bin/activate
    python3 -m pip install -r requirements.txt
+   ```
+
+4. Make sure the PostgreSQL service is running and that there's a user with full priviliges (usually `postgres`). Rename the `.sample.env` to `.env` and edit the connection string for your Postgres instance. For example, if your Postgres DB runs locally on port `5432` with user `postgres` and password `topsecret` your `.env` file should contain `DB_CONN=postgresql://postgres:topsecret@localhost:5432/vegeo`.
+
+5. Add the connection string to your path and import the database dump from the DB folder.
+
+   ```bash
+   source .env
+   PG_CONN=$(echo $DB_CONN | sed 's:/[^/]*$::')
+   pg_restore -d $PG_CONN data/db/vegeo-db.dump -cC
+   ```
+
+   _Note_: `PG_CONN` is the connection string to your Postgres instance _without_ the `vegeo` DB, which needs to be dropped during the import.
+
+6. Start the API server.
+
+   ```bash
+   python3 -m fastapi run src/api.py
    ```
 
 </details>
