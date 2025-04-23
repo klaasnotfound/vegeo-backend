@@ -66,5 +66,5 @@ def show_masks():
 
 
 if __name__ == "__main__":
-    # train_and_persist()
-    predict("naip_17_51875_32785")
+    train_and_persist()
+    # predict("naip_17_51875_32785")
