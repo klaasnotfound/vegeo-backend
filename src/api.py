@@ -110,5 +110,5 @@ def get_vegetation_alerts(
 @app.get("/docs", include_in_schema=False)
 def expose_redoc():
     return get_redoc_html(
-        openapi_url="/openapi.json", title="Vegeo API Documentation", redoc_favicon_url="/data/assets/favicon.ico"
+        openapi_url="/openapi.json", title="Vegeo API Documentation", redoc_favicon_url="https://github.com/klaasnotfound/vegeo-backend/raw/refs/heads/main/data/assets/favicon.png"
     )
