@@ -1,6 +1,6 @@
 services:
   api:
-    image: klaasnotfound/vegeo:latest
+    image: klaasnotfound/vegeo-backend:latest
     container_name: 'vegeo-api-server'
     volumes:
       - ./src:/app/src
