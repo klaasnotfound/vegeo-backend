@@ -1,5 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel, Field
+from pydantic.alias_generators import to_camel
 from sqlalchemy import String, Float, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import PrimaryKeyConstraint
@@ -50,17 +51,20 @@ class RegionSchema(BaseModel):
     num_pls: Optional[int] = Field(None, title="Number of power line segments in the region")
 
     model_config = {
+        "alias_generator": to_camel,
+        "populate_by_name": True,
+        "from_attributes": True,
         "json_schema_extra": {
             "examples": [
                 {
                     "name": "Mesa",
-                    "img_url": "https://commons.wikimedia.org/w/thumb.php?width=320&f=Downtown%20Mesa%20Arizona.jpg",
-                    "bb_min_lat": 33.3132423,
-                    "bb_max_lat": 33.5121448,
-                    "bb_max_lon": -111.7181466,
-                    "bb_min_lon": -111.9348257,
-                    "num_pls": 41,
-                }
+                    "bbMinLat": 33.3132423,
+                    "bbMinLon": -111.9348257,
+                    "bbMaxLat": 33.5121448,
+                    "bbMaxLon": -111.7181466,
+                    "imgUrl": "https://commons.wikimedia.org/w/thumb.php?width=320&f=Downtown%20Mesa%20Arizona.jpg",
+                    "numPls": 41,
+                },
             ]
-        }
+        },
     }

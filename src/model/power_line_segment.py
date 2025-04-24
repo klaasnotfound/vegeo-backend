@@ -1,6 +1,7 @@
 import json
 from typing import Dict
 from pydantic import BaseModel, Field
+from pydantic.alias_generators import to_camel
 from sqlalchemy import Integer, Float, String
 from sqlalchemy.orm import Mapped, mapped_column
 from src.model.base import Base
@@ -44,17 +45,20 @@ class PowerLineSegmentSchema(BaseModel):
     geometry: str = Field(title="JSON string of [lat, lon] node pairs")
 
     model_config = {
+        "alias_generator": to_camel,
+        "populate_by_name": True,
+        "from_attributes": True,
         "json_schema_extra": {
             "examples": [
                 {
                     "id": 704226268,
-                    "bb_min_lat": 35.0581349,
-                    "bb_min_lon": -106.5568071,
-                    "bb_max_lat": 35.0595676,
-                    "bb_max_lon": -106.5489647,
-                    "num_nodes": 13,
+                    "bbMinLat": 35.0581349,
+                    "bbMinLon": -106.5568071,
+                    "bbMaxLat": 35.0595676,
+                    "bbMaxLon": -106.5489647,
+                    "numNodes": 13,
                     "geometry": "[[35.0595581, -106.5568071], [35.0595619, -106.5557802], ... ]",
                 },
             ]
-        }
+        },
     }

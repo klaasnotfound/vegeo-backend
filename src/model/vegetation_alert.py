@@ -1,5 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel, Field
+from pydantic.alias_generators import to_camel
 from sqlalchemy import ForeignKey, Integer, Float, PrimaryKeyConstraint, String
 from sqlalchemy.orm import Mapped, mapped_column
 from src.model.base import Base
@@ -46,6 +47,9 @@ class VegetationAlertSchema(BaseModel):
     pls_id: Optional[int] = Field(None, title="ID of the power line segment this alert belongs to")
 
     model_config = {
+        "alias_generator": to_camel,
+        "populate_by_name": True,
+        "from_attributes": True,
         "json_schema_extra": {
             "examples": [
                 {
@@ -53,8 +57,8 @@ class VegetationAlertSchema(BaseModel):
                     "lon": -74.0427875518799,
                     "desc": "Power line overlap",
                     "risk": 2,
-                    "pls_id": 203432097,
+                    "plsId": 203432097,
                 },
             ]
-        }
+        },
     }
