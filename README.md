@@ -16,7 +16,7 @@
 
 This repository showcases a basic implementation of geo-referenced vegetation alerts. It analyzes open source satellite imagery from the [USDA National Agriculture Imagery Program](https://www.arcgis.com/home/item.html?id=e74cf6b0790e424489bbe84cbc0dc7ad) (NAIP), cross-references it with the geometry of low-voltage power lines in major US cities from [OpenStreetMap](https://wiki.openstreetmap.org/wiki/Tag:power%3Dminor_line) and generates geo-referenced alerts where vegetation overlaps with power line segments. The results are exposed via a simple REST API.
 
-When the API server is running, you can use the companion `vegeo-web-app` to view the detection results on a map in your browser.
+When the API server is running, you can use the [`vegeo-web-app`](https://github.com/klaasnotfound/vegeo-web-app) frontend to view the detection results on a map in your browser.
 
 ## Installation
 
@@ -33,7 +33,7 @@ The easiest way to get the Vegeo backend up and running is by using Docker:
 docker compose up
 ```
 
-_Note:_ The vegeo Docker image supports `linux/arm64` and `linux/amd64`, so it should work on a Mac (both Apple Silicon and Intel) as well as on Windows and Linux. If your architecture doesn't match you will want to open the `docker-compose.yaml` file, replace `image: klaasnotfound/vegeo:latest` with `build: .` and run `docker compose up` again. The build will take a few minutes.
+_Note:_ The Docker image supports `linux/arm64` and `linux/amd64`, so it should work on a Mac (both Apple Silicon and Intel) as well as on Windows and Linux. If your architecture doesn't match you will want to open the `docker-compose.yaml` file, replace `image: klaasnotfound/vegeo:latest` with `build: .` and run `docker compose up` again. The build will take a few minutes.
 
 ---
 
