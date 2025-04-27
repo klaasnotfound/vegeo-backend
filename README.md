@@ -259,3 +259,26 @@ If this fails because of pre-existing tables or inconsistent database content, y
 No worries. You can _completely delete_ the `data/db/postgres` folder, kill the container (`docker compose down`) and then restart it (`docker compose up`). A fresh instance of the database will be created.
 
 </details>
+
+---
+
+<details>
+<summary> Both containers start, but the backend is unreachable.</summary>
+ 
+
+Please double-check your browser URL, it should be [http://localhost:3000](http://localhost:3000). When the NextJS web app starts, it might offer you an alternative URL from the Docker network adapter:
+
+```
+vegeo-web-app-web-app-1  | > next start
+vegeo-web-app-web-app-1  |
+vegeo-web-app-web-app-1  |    ▲ Next.js 15.2.4
+vegeo-web-app-web-app-1  |    - Local:        http://localhost:3000
+vegeo-web-app-web-app-1  |    - Network:      http://172.21.0.2:3000
+vegeo-web-app-web-app-1  |
+vegeo-web-app-web-app-1  |  ✓ Starting...
+vegeo-web-app-web-app-1  |  ✓ Ready in 249ms
+```
+
+If you accidentally use that URL, the web app requests will be blocked due to CORS.
+
+</details>
